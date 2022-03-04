@@ -10,25 +10,40 @@ public class PlayerMove : MonoBehaviour
     private bool groundedPlayer;
 
     [SerializeField] private float playerSpeed = 2.0f;
-    [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
 
     private Vector2 movementInput = Vector2.zero;
-    private bool jumped = false;
 
+
+    public LayerMask ItemMask;
+    public LayerMask DepositMask;
 
     private void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void OnMove(Vector2 direction)
     {
-        movementInput = context.ReadValue<Vector2>();
+        movementInput = direction;
     }
-    public void OnJump(InputAction.CallbackContext context)
+
+    public void OnMoveUnity()
     {
-        jumped = context.action.triggered;
+
+    }
+    public void OnInteract()
+    {
+        Debug.Log("Press");
+        if (Physics.CheckSphere(transform.position,1f,ItemMask))
+        {
+            Debug.Log("Found Item");
+        }
+
+        if (Physics.CheckSphere(transform.position, 1f, DepositMask))
+        {
+            Debug.Log("Found Deposit");
+        }
     }
     void Update()
     {
@@ -44,12 +59,6 @@ public class PlayerMove : MonoBehaviour
         if (move != Vector3.zero)
         {
             gameObject.transform.forward = move;
-        }
-
-        // Changes the height position of the player..
-        if (jumped && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;

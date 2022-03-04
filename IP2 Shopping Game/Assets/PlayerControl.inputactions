@@ -1,8 +1,8 @@
 {
-    "name": "Player",
+    "name": "PlayerControl",
     "maps": [
         {
-            "name": "Player",
+            "name": "PlayerMove",
             "id": "32f29615-1d0a-4c8b-82b5-7938bca86e18",
             "actions": [
                 {
@@ -18,6 +18,33 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "a0a75a32-8eb1-41a6-ba9c-6ee6e54b4bce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Place Trap",
+                    "type": "Button",
+                    "id": "59a5e5da-7550-4c15-8c29-1eb6572e75c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "c356b82b-9516-452b-ad14-ec5272cc3595",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "3dc1a064-46d1-430a-91b6-0def5cc41a2c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -178,6 +205,72 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "2b235173-005b-4baa-8ef0-9563276abf67",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "KeyboardP1",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d8576b5-e211-4056-b61f-7f8c26036706",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8688aa6-d06b-4d44-b904-76ba1adeed08",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "KeyboardP1",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74e5db12-02cf-4093-acfd-1cfb688c7e71",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13ad2232-01cb-4a43-b072-90d71a7becb4",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Place Trap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94eb638b-ad68-4650-a05e-27418886c7e4",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardP1",
+                    "action": "Place Trap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
