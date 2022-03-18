@@ -7,6 +7,10 @@ TagManager:
   - Item
   - Player 1
   - Player 2
+  - Milk
+  - Bottle
+  - Jar
+  - Worms
   layers:
   - Default
   - TransparentFX

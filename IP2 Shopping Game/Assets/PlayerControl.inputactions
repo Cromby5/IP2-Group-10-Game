@@ -20,13 +20,22 @@
                     "id": "a0a75a32-8eb1-41a6-ba9c-6ee6e54b4bce",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Place Trap",
                     "type": "Button",
                     "id": "59a5e5da-7550-4c15-8c29-1eb6572e75c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "117ccaa3-ef9f-4258-85ce-e45d537a6f97",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -45,6 +54,15 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "3dc1a064-46d1-430a-91b6-0def5cc41a2c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reset",
+                    "type": "Button",
+                    "id": "9640aeb2-c024-4f4e-ad5e-b8e4a0c5d76a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -264,11 +282,55 @@
                 {
                     "name": "",
                     "id": "94eb638b-ad68-4650-a05e-27418886c7e4",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/alt",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardP1",
                     "action": "Place Trap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3bc01f8-9cae-4543-b25f-ff513fd853bb",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardP1",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e2d816e-d724-4146-aca7-7d8baa8be060",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a31e54fb-2a32-4d05-a020-e311d4392cf6",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardP1",
+                    "action": "Reset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9801f7b-f04c-42a3-b682-9d3ac74694b7",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Reset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

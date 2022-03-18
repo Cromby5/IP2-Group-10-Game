@@ -42,13 +42,22 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""id"": ""a0a75a32-8eb1-41a6-ba9c-6ee6e54b4bce"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Place Trap"",
                     ""type"": ""Button"",
                     ""id"": ""59a5e5da-7550-4c15-8c29-1eb6572e75c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""117ccaa3-ef9f-4258-85ce-e45d537a6f97"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -67,6 +76,15 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""3dc1a064-46d1-430a-91b6-0def5cc41a2c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""9640aeb2-c024-4f4e-ad5e-b8e4a0c5d76a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -286,11 +304,55 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""94eb638b-ad68-4650-a05e-27418886c7e4"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardP1"",
                     ""action"": ""Place Trap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3bc01f8-9cae-4543-b25f-ff513fd853bb"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardP1"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e2d816e-d724-4146-aca7-7d8baa8be060"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a31e54fb-2a32-4d05-a020-e311d4392cf6"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardP1"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9801f7b-f04c-42a3-b682-9d3ac74694b7"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -338,8 +400,10 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         m_PlayerMove_Movement = m_PlayerMove.FindAction("Movement", throwIfNotFound: true);
         m_PlayerMove_Jump = m_PlayerMove.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMove_PlaceTrap = m_PlayerMove.FindAction("Place Trap", throwIfNotFound: true);
+        m_PlayerMove_Dash = m_PlayerMove.FindAction("Dash", throwIfNotFound: true);
         m_PlayerMove_Select = m_PlayerMove.FindAction("Select", throwIfNotFound: true);
         m_PlayerMove_Cancel = m_PlayerMove.FindAction("Cancel", throwIfNotFound: true);
+        m_PlayerMove_Reset = m_PlayerMove.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -402,8 +466,10 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMove_Movement;
     private readonly InputAction m_PlayerMove_Jump;
     private readonly InputAction m_PlayerMove_PlaceTrap;
+    private readonly InputAction m_PlayerMove_Dash;
     private readonly InputAction m_PlayerMove_Select;
     private readonly InputAction m_PlayerMove_Cancel;
+    private readonly InputAction m_PlayerMove_Reset;
     public struct PlayerMoveActions
     {
         private @PlayerControl m_Wrapper;
@@ -411,8 +477,10 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_PlayerMove_Movement;
         public InputAction @Jump => m_Wrapper.m_PlayerMove_Jump;
         public InputAction @PlaceTrap => m_Wrapper.m_PlayerMove_PlaceTrap;
+        public InputAction @Dash => m_Wrapper.m_PlayerMove_Dash;
         public InputAction @Select => m_Wrapper.m_PlayerMove_Select;
         public InputAction @Cancel => m_Wrapper.m_PlayerMove_Cancel;
+        public InputAction @Reset => m_Wrapper.m_PlayerMove_Reset;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMove; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -431,12 +499,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlaceTrap.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnPlaceTrap;
+                @Dash.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnDash;
                 @Select.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnSelect;
                 @Cancel.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnCancel;
                 @Cancel.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnCancel;
                 @Cancel.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnCancel;
+                @Reset.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnReset;
+                @Reset.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnReset;
+                @Reset.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnReset;
             }
             m_Wrapper.m_PlayerMoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -450,12 +524,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlaceTrap.started += instance.OnPlaceTrap;
                 @PlaceTrap.performed += instance.OnPlaceTrap;
                 @PlaceTrap.canceled += instance.OnPlaceTrap;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
+                @Reset.started += instance.OnReset;
+                @Reset.performed += instance.OnReset;
+                @Reset.canceled += instance.OnReset;
             }
         }
     }
@@ -492,7 +572,9 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPlaceTrap(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
 }

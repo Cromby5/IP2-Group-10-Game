@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
+using UnityEngine.SceneManagement;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -35,6 +36,18 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnInteract(obj);
         }
+        else if (obj.action.name == controls.PlayerMove.Dash.name)
+        {
+            OnDash(obj);
+        }
+        else if (obj.action.name == controls.PlayerMove.PlaceTrap.name)
+        {
+            OnPlace(obj);
+        }
+        else if (obj.action.name == controls.PlayerMove.Reset.name)
+        {
+            OnReset(obj);
+        }
     }
     public void OnMove(CallbackContext context)
     {
@@ -46,5 +59,22 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (move != null)
             move.OnInteract();
+    }
+
+    public void OnDash(CallbackContext context)
+    {
+        if (move != null)
+            move.OnDash();
+    }
+
+    public void OnPlace(CallbackContext context)
+    {
+        if (move != null)
+            move.OnPlace();
+    }
+
+    public void OnReset(CallbackContext context)
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }

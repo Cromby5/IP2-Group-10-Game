@@ -6,7 +6,7 @@ public class PowerUpSpeed : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player 1") || other.transform.CompareTag("Player 2"))
         {
             // Speed Stuff here
             player = other.GetComponent<PlayerMove>();
