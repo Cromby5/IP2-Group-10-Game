@@ -6,6 +6,18 @@ using UnityEngine.UI;
 public class BarFill : MonoBehaviour
 {
     public Slider slider;
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        anim.speed = 0;
+    }
+
+    void Update()
+    {
+        anim.Play("TEST", -1, slider.normalizedValue);
+    }
 
     public void SetMaxItems(int value)
     {
