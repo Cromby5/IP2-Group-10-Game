@@ -12,6 +12,8 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] private Animator anim;
 
+    [SerializeField] private Animator StunVisual;
+
     [Header("Trap")]
     [SerializeField] GameObject trapPrefab;
     public Transform trapPlacePoint;
@@ -20,6 +22,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float trapTimer;
     private float trapTimerStore;
     public TextMeshProUGUI trapTXT;
+
+    [SerializeField] private ParticleSystem stunPart;
 
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -32,6 +36,7 @@ public class PlayerMove : MonoBehaviour
 
     public bool hasInteract;
     private bool canmove;
+    private bool hasHit;
 
     [Header("Dash")]
     [SerializeField] private float timeForDashRecharge;
@@ -43,9 +48,15 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private bool isDashing;
 
     [SerializeField] private Image Trap;
-    [SerializeField] private Image Stun;
 
     public TextMeshProUGUI Timer_Display;
+
+    public AudioSource audioSource;
+    public AudioClip powerUp;
+    public AudioClip stunSound;
+    public AudioClip dashSound;
+    public AudioClip trapSound;
+
     private void Start()
     {
         canmove = true;
@@ -95,6 +106,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (trapCount > 0 && trapTimer <= 0)
         {
+            audioSource.PlayOneShot(trapSound);
             trapCount -= 1;
             trapTXT.text = trapCount.ToString() + " / " + maxTrapCount;
             if (trapCount == 0)
@@ -162,6 +174,7 @@ public class PlayerMove : MonoBehaviour
 
     public void ChangeSpeed(float i)
     {
+        audioSource.PlayOneShot(powerUp);
         float temp = playerSpeed;
         playerSpeed += i;
         // Start Timer
@@ -171,7 +184,10 @@ public class PlayerMove : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         float startTime = Time.time; // need to remember this to know how long to dash
+        audioSource.PlayOneShot(dashSound);
         isDashing = true;
+        hasHit = false;
+        canmove = false;
         while (Time.time < startTime + dashTime)
         {
             controller.Move(transform.forward * dashSpeed * Time.deltaTime);
@@ -179,6 +195,8 @@ public class PlayerMove : MonoBehaviour
             yield return null; // this will make Unity stop here and continue next frame
         }
         isDashing = false;
+        canmove = true;
+        StunVisual.SetTrigger("Stun");
         timeForDashRecharge = DashRechargeStore;
     }
 
@@ -190,9 +208,12 @@ public class PlayerMove : MonoBehaviour
 
     private IEnumerator DisableTime()
     {
+        audioSource.PlayOneShot(stunSound);
         canmove = false;
+        stunPart.Play();
         anim.SetTrigger("Stun");
         yield return new WaitForSeconds(2f);
+        stunPart.Stop();
         canmove = true;
         anim.ResetTrigger("Stun");
     }
@@ -206,12 +227,14 @@ public class PlayerMove : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        PlayerMove I = other.gameObject.GetComponent<PlayerMove>();
+        PlayerMove M = other.gameObject.GetComponent<PlayerMove>();
+        PlayerInventory I = other.gameObject.GetComponent<PlayerInventory>();
 
-        if (I != null && !I.CompareTag(gameObject.tag) && isDashing)
+        if (M != null && !M.CompareTag(gameObject.tag) && isDashing && !hasHit)
         {
-            I.DisableMove();
-            
+            hasHit = true;
+            M.DisableMove();
+            I.PlayerHit();
         }
     }
 

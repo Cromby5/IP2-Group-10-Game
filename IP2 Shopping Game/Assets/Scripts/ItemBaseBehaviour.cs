@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using HighlightPlus;
 
 public class ItemBaseBehaviour : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class ItemBaseBehaviour : MonoBehaviour
     public GameObject i1;
     public GameObject i2;
 
+    private HighlightEffect effect;
+
     private void Start()
     {
+        effect = GetComponent<HighlightEffect>();
         hasGrabbed = false;
         int i = Random.Range(0,Items.Length);
         Items[i].SetActive(true);
+        effect.Refresh();
 
        switch (i)
        {
@@ -93,7 +98,24 @@ public class ItemBaseBehaviour : MonoBehaviour
             Debug.Log("Found2");
             hasGrabbed = true;
             I.ItemAdd();
-            Destroy(gameObject);
+            //Destroy(gameObject);
+
+            if (I.pos1.childCount == 0)
+            {
+                gameObject.transform.parent = I.pos1;
+            }
+            else if (I.pos2.childCount == 0)
+            {
+                gameObject.transform.parent = I.pos2;
+            }
+            else if (I.pos3.childCount == 0)
+            {
+                gameObject.transform.parent = I.pos3;
+            }
+
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+            effect.outline = 0f;
         }
     }
 

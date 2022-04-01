@@ -20,11 +20,27 @@ public class PlayerInventory : MonoBehaviour
 
     public BarFill Bar;
 
+    // Holders for items that get placed into the cart
+    public Transform pos1;
+    public Transform pos2;
+    public Transform pos3;
+
+    // Audio Sources + Clips
+    public AudioSource audioSource;
+    public AudioClip pickUpSound;
+    public AudioClip checkOutSound;
+
+    public LevelInitialize manager;
+
+
+    private bool winState;
     // Start is called before the first frame update
     void Start()
     {
         itemsHeld = 0;
         totalItems = 0;
+        winState = false;
+
         //player = gameObject.GetComponent<PlayerMove>();
         Bar.SetMaxItems(AmountOfItemsToGet);
         Bar.ShowProgress(totalItems);
@@ -33,16 +49,16 @@ public class PlayerInventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (totalItems >= AmountOfItemsToGet)
+        if (totalItems >= AmountOfItemsToGet && !winState)
         {
-            Debug.Log("WIN");
-            SceneManager.LoadScene("Menu");
+            manager.StartCoroutine("EndGame");
+            winState = true;
         }
     }
 
     public void ItemAdd()
     {
+        audioSource.PlayOneShot(pickUpSound);
         itemsHeld += 1;
         playerText.text = "Items Held: " + itemsHeld + " / " + maxHeldItems;
         if (itemsHeld < maxHeldItems)
@@ -53,6 +69,9 @@ public class PlayerInventory : MonoBehaviour
 
     public void ItemRemove()
     {
+        if (itemsHeld == 0)
+            return;
+        audioSource.PlayOneShot(checkOutSound);
         totalItems += itemsHeld;
         totalText.text = "Total Items: " + totalItems;
         Bar.ShowProgress(totalItems);
@@ -62,6 +81,24 @@ public class PlayerInventory : MonoBehaviour
             //player.AddTrap();
         }
         itemsHeld = 0;
+
+        foreach (Transform childTransform in pos1.transform) Destroy(childTransform.gameObject);
+        foreach (Transform childTransform in pos2.transform) Destroy(childTransform.gameObject);
+        foreach (Transform childTransform in pos3.transform) Destroy(childTransform.gameObject);
+
         playerText.text = "Items Held: " + itemsHeld + " / " + maxHeldItems;
+    }
+
+    public void PlayerHit()
+    {
+        if (itemsHeld > 0)
+        {
+            itemsHeld -= 1;
+            playerText.text = "Items Held: " + itemsHeld + " / " + maxHeldItems;
+            if (itemsHeld == 2)
+            {
+                itemSpawn.SpawnItem();
+            }
+        }
     }
 }

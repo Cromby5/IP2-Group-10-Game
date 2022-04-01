@@ -14,8 +14,10 @@ public class LevelInitialize : MonoBehaviour
     [SerializeField] private float maxTime;
     public TextMeshProUGUI Timer_Display;
 
+    private AudioSource audioSource;
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         var playerConfigs = PlayerConfigManager.Instance.GetPlayerConfigs().ToArray();
         for (int i =0; i <playerConfigs.Length; i++)
         {
@@ -26,12 +28,14 @@ public class LevelInitialize : MonoBehaviour
 
     void Update()
     {
+        /*
         maxTime -= Time.deltaTime;
         DisplayTime(maxTime);
         if (maxTime <= 0)
         {
             EndGame();
         }
+        */
     }
 
     void DisplayTime(float timeToDisplay)
@@ -44,9 +48,12 @@ public class LevelInitialize : MonoBehaviour
         Timer_Display.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    void EndGame()
+      
+    public IEnumerator EndGame()
     {
+        Debug.Log("Win");
+        audioSource.Play();
+        yield return new WaitForSeconds(5f);
         SceneManager.LoadScene("Menu");
     }
-
 }

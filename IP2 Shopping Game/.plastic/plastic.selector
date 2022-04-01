@@ -1,0 +1,4 @@
+repository "IP2 Shopping Game@Cromby@cloud"
+  path "/"
+    br "/main"
+    co "/main"
